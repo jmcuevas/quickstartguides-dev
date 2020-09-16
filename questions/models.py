@@ -6,7 +6,7 @@ class Question(models.Model):
     title = models.CharField(max_length = 255)
     body = models.TextField()
     total_votes = models.IntegerField(default=0)
-    # created_by = 
+    # created_by = models.ForeignKey()
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Answer(models.Model):
@@ -21,5 +21,5 @@ class Vote(models.Model):
 
 class Bookmark(models.Model):
     # user = 
-    question = models.ForeignKey('Question' on_delete=models.CASCADE, related_name='bookmarks')
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='bookmarks')
 
