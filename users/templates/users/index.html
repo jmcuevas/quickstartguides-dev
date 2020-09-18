@@ -1,3 +1,9 @@
 {% extends "users/layout.html" %}
 
-<p>User Index</p>
+
+{% block body %}
+    {% if message %}
+            <div>{{ message }}</div>
+    {% endif %}
+    <p>User Index</p>
+{% endblock %}
