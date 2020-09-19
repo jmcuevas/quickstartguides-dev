@@ -1,0 +1,7 @@
+<h1>New Question</h1>
+
+<form action="{% url 'question_new' %}" method="post">
+    {% csrf_token %}
+    {{ new_question_form }}
+    <input type="submit" name="submit" value="Submit Question">
+</form>
