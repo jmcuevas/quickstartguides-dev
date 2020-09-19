@@ -23,7 +23,7 @@ def new(request):
     if request.method == "POST":
         form = NewQuestionForm(request.POST)
         
-        # Valid form data
+        # Valida form data
         if form.is_valid():
             title = form.cleaned_data["title"]
             body = form.cleaned_data["body"]
@@ -42,7 +42,7 @@ def new(request):
 
             return(HttpResponseRedirect(reverse("index")))
 
-        # Form not vaild
+        # Invalid form data
         else:
             print("Error: Post not Created")
             return HttpResponseRedirect(reverse("new"))
@@ -50,3 +50,8 @@ def new(request):
     # Get request to questions/new
     else:
         return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
+
+def list_all(request):
+    questions = Question.objects.all().order_by("-created_at")
+    return render(request, "questions/list.html", 
+    {"questions": questions })
