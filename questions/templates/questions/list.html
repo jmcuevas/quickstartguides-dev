@@ -1,5 +1,10 @@
 <h1>Questions List</h1>
 
 {% for question in questions %}
-    <p>{{ question.title }}</p>
+    <ul>
+        <li> 
+            <a href="{% url 'question_show' question.pk %}"> {{ question.title }}</a>
+        </li>
+    </ul>
+    <!-- <p>{{ question.title }}</p> -->
 {% endfor %}

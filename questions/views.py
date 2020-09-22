@@ -55,3 +55,8 @@ def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
     return render(request, "questions/list.html", 
     {"questions": questions })
+
+def show(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    return render(request, "questions/show.html", {
+        "question":question })
