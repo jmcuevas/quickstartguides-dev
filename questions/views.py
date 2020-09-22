@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from django import forms
-from .models import Question
+from .models import Question, Answer
 
 # ----- Forms -----
 
@@ -58,5 +58,7 @@ def list_all(request):
 
 def show(request, question_id):
     question = Question.objects.get(pk=question_id)
+    answers = Answer.objects.filter(question=question)
+
     return render(request, "questions/show.html", {
-        "question":question })
+        "question":question, "answers":answers })
