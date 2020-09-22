@@ -62,3 +62,9 @@ def show(request, question_id):
 
     return render(request, "questions/show.html", {
         "question":question, "answers":answers })
+
+def edit(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    form_data = {"title": "Form Data Title", "body": "Form Data Body"}
+    
+    return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
