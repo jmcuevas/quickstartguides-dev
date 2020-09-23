@@ -64,14 +64,22 @@ def show(request, question_id):
         "question":question, "answers":answers })
 
 def edit(request, question_id):
+
+    # Check if question exists
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
+        print("---Question does not exist---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
-    form_data = {"title": question.title, "body": question.body}
+    if request.user.is_authenticated and request.user == question.created_by:
+        form_data = {"title": question.title, "body": question.body}
     
-    return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
+        return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
+
+    else:
+        print("---User is not logged in or didn't created question---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
 
 def update(request, question_id):
 
