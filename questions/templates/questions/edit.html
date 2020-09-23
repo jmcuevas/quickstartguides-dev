@@ -1,6 +1,7 @@
 <h1>Question Edit {{ question.pk }}</h1>
 
-<form action="">
+<form action="{% url 'question_update' question.pk %}" method="post">
+    {% csrf_token %}
     {{ form }}
     <input type="submit" name="submit" value="Save">
 </form>

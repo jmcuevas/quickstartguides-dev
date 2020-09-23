@@ -23,7 +23,7 @@ def new(request):
     if request.method == "POST":
         form = NewQuestionForm(request.POST)
         
-        # Valida form data
+        # Valid form data
         if form.is_valid():
             title = form.cleaned_data["title"]
             body = form.cleaned_data["body"]
@@ -64,7 +64,51 @@ def show(request, question_id):
         "question":question, "answers":answers })
 
 def edit(request, question_id):
-    question = Question.objects.get(pk=question_id)
-    form_data = {"title": "Form Data Title", "body": "Form Data Body"}
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    form_data = {"title": question.title, "body": question.body}
     
     return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
+
+def update(request, question_id):
+
+    # Check if Question exists
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User should have created Question to update
+    if not (request.user == question.created_by):
+        print("---User didn't created question")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User submited edit form
+    if request.method == "POST":
+        form = NewQuestionForm(request.POST)
+
+        # Validate form data
+        if form.is_valid():
+            new_title = form.cleaned_data["title"]
+            new_body = form.cleaned_data["body"]
+
+            question.title = new_title
+            question.body = new_body
+            question.save()
+
+            print("---Question saved---")
+
+            return HttpResponseRedirect(reverse("question_show", kwargs={'question_id': question.pk}))
+
+        else:
+            print("---Question data is not valid---")
+            return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # Request method is other than POST
+    else:
+        print("---Method is not post---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
