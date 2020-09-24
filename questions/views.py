@@ -87,6 +87,7 @@ def update(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
+        print("---Question does not exists---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
     # User should have created Question to update
@@ -120,3 +121,25 @@ def update(request, question_id):
         print("---Method is not post---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
+def delete(request, question_id):
+
+    # Check if question exists
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        print("---Question does not exists---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User should have created Question to update
+    if not (request.user == question.created_by):
+        print("---User didn't created question")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User clicked on Delete button (Post request)
+    if request.method == "POST":
+        print("---Question deleted---")
+        question.delete()
+    else:
+        print("---views.delete: not POST method---")
+
+    return HttpResponseRedirect(reverse('questions_list_all'))

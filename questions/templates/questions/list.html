@@ -6,6 +6,10 @@
             <a href="{% url 'question_show' question.pk %}"> {{ question.title }}</a>
             {% if question.created_by == user %}
                 <a href="{% url 'question_edit' question.pk %}">Edit</a>
+                <form action="{% url 'question_delete' question.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete">
+                </form>
             {% endif %}
         </li>
     </ul>
