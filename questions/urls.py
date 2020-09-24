@@ -10,4 +10,5 @@ urlpatterns = [
     path("edit/<int:question_id>", views.edit, name="question_edit"),
     path("update/<int:question_id>", views.update, name="question_update"),
     path("delete/<int:question_id>", views.delete, name="question_delete"),
+    path("upvote/<int:question_id>", views.upvote, name="question_upvote"),
 ]

@@ -11,6 +11,10 @@
                     <input type="submit" value="Delete">
                 </form>
             {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'question_upvote' question.pk %}">Upvote</a>
+                <a href="">Downvote</a>
+            {% endif %}
         </li>
     </ul>
 {% endfor %}
