@@ -177,7 +177,46 @@ def upvote(request, question_id):
                 # Redirect
             else: 
                 vote.delete()
+                print("---Downvote deleted---")
+
+        update_total_votes(question)
+        
+    return HttpResponseRedirect(reverse("questions_list_all"))
+
+def downvote(request, question_id):
+
+    # Check if question exists
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        print("---Question does not exists---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User should be logged in
+    if request.user.is_authenticated:
+
+        # User can only upvote a question once
+        try:
+            vote = Vote.objects.get(user=request.user, question=question)
+        except Vote.DoesNotExist:
+            print("Vote does not exist")
+            vote = None
+
+        # Create new upvote
+        if vote is None:
+            downvote = Vote(user=request.user, question=question, upvote=False)
+            downvote.save()
+            print("---Question Downvoted---")
+
+        # Question is already voted
+        else:
+            if vote.upvote:
+                vote.delete()
                 print("---Upvote deleted---")
+            else: 
+                print("---User can only downvote question once---")
+                # User can oly upvote the question once
+                # Redirect
 
         update_total_votes(question)
         
@@ -189,6 +228,6 @@ def upvote(request, question_id):
 def update_total_votes(question):
     upvotes = Vote.objects.filter(question=question, upvote = True).count()
     downvotes = Vote.objects.filter(question=question, upvote = False).count()
-    print(f"---Total votes: {upvotes} - {downvotes}---")
     question.total_votes = upvotes - downvotes 
     question.save()
+    print(f"---Total votes: {upvotes} - {downvotes} = {question.total_votes}---")
