@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from django import forms
-from .models import Question, Answer, Vote
+from .models import Question, Answer, Vote, Bookmark
 
 # ----- Forms -----
 
@@ -221,6 +221,37 @@ def downvote(request, question_id):
         update_total_votes(question)
         
     return HttpResponseRedirect(reverse("questions_list_all"))
+
+def bookmark(request, question_id):
+
+    # Check if question exists
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        print("---Question does not exists---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+    # User should be logged in
+    if request.user.is_authenticated:
+
+        try:
+            bookmark = Bookmark.objects.get(user=request.user, question=question)
+        except Bookmark.DoesNotExist:
+            bookmark = None
+    
+        # Create bookmark
+        if bookmark is None:
+            bookmark = Bookmark(user=request.user, question=question)
+            bookmark.save()
+            print("---Bookmark has been created---")
+        else:
+            bookmark.delete()
+            print("---Bookmark has been deleted---")
+
+    
+    return HttpResponseRedirect(reverse('questions_list_all'))
+            
+
 
 
 # ----- Helpers -----
