@@ -60,8 +60,17 @@ def show(request, question_id):
     question = Question.objects.get(pk=question_id)
     answers = Answer.objects.filter(question=question)
 
+    try:
+        bookmark = Bookmark.objects.get(question=question, user=request.user)
+        if bookmark:
+            bookmarked = True
+    except Bookmark.DoesNotExist:
+        bookmarked = False
+
     return render(request, "questions/show.html", {
-        "question":question, "answers":answers })
+        "question":question, 
+        "answers":answers,
+        "bookmarked":bookmarked })
 
 def edit(request, question_id):
 
