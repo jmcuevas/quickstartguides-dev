@@ -234,6 +234,7 @@ def bookmark(request, question_id):
     # User should be logged in
     if request.user.is_authenticated:
 
+        # Check if question is already bookmarked
         try:
             bookmark = Bookmark.objects.get(user=request.user, question=question)
         except Bookmark.DoesNotExist:
@@ -244,6 +245,8 @@ def bookmark(request, question_id):
             bookmark = Bookmark(user=request.user, question=question)
             bookmark.save()
             print("---Bookmark has been created---")
+
+        # Delete bookmark
         else:
             bookmark.delete()
             print("---Bookmark has been deleted---")
