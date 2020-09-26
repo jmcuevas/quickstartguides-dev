@@ -11,8 +11,10 @@ class NewQuestionForm(forms.Form):
     title = forms.CharField(label="Title")
     body = forms.CharField(label="Body", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write a question...'}))
 
+class NewAnswerForm(forms.Form):
+    body = forms.CharField(widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
 
-# ----- Views -----
+# ----- Views Questions -----
 
 def index(request):
     return render(request, "questions/index.html")
@@ -79,7 +81,8 @@ def show(request, question_id):
     return render(request, "questions/show.html", {
         "question":question, 
         "answers":answers,
-        "bookmarked":bookmarked })
+        "bookmarked":bookmarked,
+        "answer_form": NewAnswerForm() })
 
 def edit(request, question_id):
 
@@ -272,7 +275,36 @@ def bookmark(request, question_id):
     
     return HttpResponseRedirect(reverse('questions_list_all'))
             
+# ----- Answers Questions -----
 
+def answer_new(request, question_id):
+    print("---Create new Answer---")
+
+    # Check if Question exists
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        print("---Question does not exists---")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":question_id}))
+
+    if request.method == "POST":
+        form = NewAnswerForm(request.POST)
+
+        # Valid form data
+        if form.is_valid():
+            body = form.cleaned_data["body"]
+            question = question
+            created_by = request.user
+            
+            new_answer = Answer(
+                body=body, 
+                question=question, 
+                created_by=created_by)
+
+            new_answer.save()
+            print("---Succes: Answer Saved---")
+
+    return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":question_id}))
 
 
 # ----- Helpers -----

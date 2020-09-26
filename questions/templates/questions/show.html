@@ -9,6 +9,14 @@
     <p>Bookmarked: {{ bookmarked }}</p>
 {% endif %}
 
+{% if user.is_authenticated %}
+    <form action="{% url 'answer_new' question.pk %}" method="post">
+        {% csrf_token %}
+        {{ answer_form }}
+        <input type="submit" value="Post Your Answer">
+    </form>
+{% endif %}
+
 {% for answer in answers %}
     <p>Answer {{ answer.pk }}</p>
     <p>Body: {{answer.body}}</p>

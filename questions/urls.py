@@ -13,4 +13,5 @@ urlpatterns = [
     path("upvote/<int:question_id>", views.upvote, name="question_upvote"),
     path("downvote/<int:question_id>", views.downvote, name="question_downvote"),
     path("bookmark/<int:question_id>", views.bookmark, name="question_bookmark"),
+    path("<int:question_id>/answer/new", views.answer_new, name="answer_new"),
 ]
