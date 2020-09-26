@@ -4,17 +4,23 @@
     <ul>
         <li> 
             <a href="{% url 'question_show' question.pk %}"> {{ question.title }}</a>
-            {% if question.created_by == user %}
-                <a href="{% url 'question_edit' question.pk %}">Edit</a>
-                <form action="{% url 'question_delete' question.pk %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" value="Delete">
-                </form>
-            {% endif %}
+            <!-- Edit, Delete, Upvote, Downvote & Bookmark -->
             {% if user.is_authenticated %}
+                {% if question.created_by == user %}
+                    <a href="{% url 'question_edit' question.pk %}">Edit</a>
+                    <form action="{% url 'question_delete' question.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete">
+                    </form>
+                {% endif %}
+
                 <a href="{% url 'question_upvote' question.pk %}">Upvote</a>
                 <a href="{% url 'question_downvote' question.pk %}">Downvote</a>
-                <a href="{% url 'question_bookmark' question.pk %}">Bookmark</a>
+                {% if question.bookmarked_by_user %}
+                    <a href="{% url 'question_bookmark' question.pk %}">Bookmark</a>
+                {% else %}
+                    <a href="{% url 'question_bookmark' question.pk %}">Bookmarked</a>
+                {% endif %}
             {% endif %}
         </li>
     </ul>

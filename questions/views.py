@@ -53,6 +53,15 @@ def new(request):
 
 def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
+
+    # Check if question is bookmarked by user
+    for question in questions:
+        try:
+            bookmark = Bookmark.objects.get(question=question, user=request.user) 
+            question.bookmarked_by_user = True
+        except:
+            question.bookmarked_by_user = False
+
     return render(request, "questions/list.html", 
     {"questions": questions })
 
@@ -64,7 +73,7 @@ def show(request, question_id):
         bookmark = Bookmark.objects.get(question=question, user=request.user)
         if bookmark:
             bookmarked = True
-    except Bookmark.DoesNotExist:
+    except:
         bookmarked = False
 
     return render(request, "questions/show.html", {
