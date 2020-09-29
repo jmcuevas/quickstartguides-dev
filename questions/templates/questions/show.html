@@ -19,6 +19,12 @@
 
 {% for answer in answers %}
     <p>Answer {{ answer.pk }}</p>
+    {% if user.is_authenticated %}
+        {% if answer.created_by == user %}
+        <a href="{% url 'answer_edit' answer.pk %}">Edit</a>
+        <a href="">Delete</a>
+        {% endif %}
+    {% endif %}
     <p>Body: {{answer.body}}</p>
     <p>Created at: {{answer.created_at}}</p>
     <p>Created by: {{answer.created_by}}</p>

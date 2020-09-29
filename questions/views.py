@@ -306,6 +306,66 @@ def answer_new(request, question_id):
 
     return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":question_id}))
 
+def answer_edit(request, answer_id):
+
+    # Check if answer exists
+    try:
+        answer = Answer.objects.get(pk=answer_id)
+    except Answer.DoesNotExist:
+        print("---Answer does not exist---")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+
+    if request.user.is_authenticated and request.user == answer.created_by:
+        form_data = {"body": answer.body}
+    
+        return render(request, "questions/edit_answer.html", {
+            "answer":answer, 
+            "form":NewAnswerForm(initial=form_data)})
+
+    else:
+        print("---User is not logged in or didn't created question---")
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+def answer_update(request, answer_id):
+    
+    # Check if answer exists
+    try:
+        answer = Answer.objects.get(pk=answer_id)
+    except Answer.DoesNotExist:
+        print("---Answer does not exist---")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+    # User should have created the Answer to update
+    if not (request.user == answer.created_by):
+        print("---User didn't created Answer")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+    # User submited edit form
+    if request.method == "POST":
+        form = NewAnswerForm(request.POST)
+
+        # Validate form data
+        if form.is_valid():
+            new_body = form.cleaned_data["body"]
+
+            answer.body = new_body
+            answer.save()
+
+            print("---Answer saved---")
+
+            return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+        else:
+            print("---Answer data is not valid---")
+            return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+    # Request method is other than POST
+    else:
+        print("---Method is not post---")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+
 
 # ----- Helpers -----
 
