@@ -22,7 +22,10 @@
     {% if user.is_authenticated %}
         {% if answer.created_by == user %}
         <a href="{% url 'answer_edit' answer.pk %}">Edit</a>
-        <a href="">Delete</a>
+        <form action="{% url 'answer_delete' answer.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
         {% endif %}
     {% endif %}
     <p>Body: {{answer.body}}</p>

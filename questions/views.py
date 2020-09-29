@@ -275,7 +275,7 @@ def bookmark(request, question_id):
     
     return HttpResponseRedirect(reverse('questions_list_all'))
             
-# ----- Answers Questions -----
+# ----- Views Answers -----
 
 def answer_new(request, question_id):
     print("---Create new Answer---")
@@ -365,7 +365,28 @@ def answer_update(request, answer_id):
         print("---Method is not post---")
         return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
 
+def answer_delete(request, answer_id):
 
+    # Check if answer exists
+    try:
+        answer = Answer.objects.get(pk=answer_id)
+    except Answer.DoesNotExist:
+        print("---Answer does not exists---")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+    # User should have created Answer to update
+    if not (request.user == answer.created_by):
+        print("---User didn't created answer")
+        return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
+
+    # User clicked on Delete button (Post request)
+    if request.method == "POST":
+        print("---Answer deleted---")
+        answer.delete()
+    else:
+        print("---Error: not POST method---")
+
+    return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
 
 # ----- Helpers -----
 
