@@ -9,7 +9,7 @@ from .models import User
 
 def index(request):
     if (request.user.is_authenticated):
-        return render(request, "users/index.html")
+        return HttpResponseRedirect(reverse('questions_list_all'))
     else:
         return render(request, "users/login.html")
 
@@ -54,7 +54,7 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse('questions_list_all'))
     else:
         return render(request, "users/register.html")
 
