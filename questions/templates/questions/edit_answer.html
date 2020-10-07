@@ -1,7 +1,15 @@
-<h1>Answer Edit {{ answer.pk }}</h1>
+{% extends "questions/layout.html" %}
 
-<form action="{% url 'answer_update' answer.pk %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" name="submit" value="Save">
-</form>
+{% block body %}
+
+    <h1>Answer Edit {{ answer.pk }}</h1>
+
+    <form action="{% url 'answer_update' answer.pk %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit" value="Save">
+    </form>
+
+{% endblock %}
+
+

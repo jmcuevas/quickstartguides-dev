@@ -1,34 +1,40 @@
-<h1>Question Show</h1>
+{% extends "questions/layout.html" %}
 
-<p>Title: {{ question.title }}</p>
-<p>Body: {{ question.body }}</p>
-<p>Total Votes: {{ question.total_votes }}</p>
-<p>Created by: {{ question.created_by }}</p>
-<p>Created at: {{ question.created_at }}</p>
-{% if user.is_authenticated %}
-    <p>Bookmarked: {{ bookmarked }}</p>
-{% endif %}
+{% block body %}
 
-{% if user.is_authenticated %}
-    <form action="{% url 'answer_new' question.pk %}" method="post">
-        {% csrf_token %}
-        {{ answer_form }}
-        <input type="submit" value="Post Your Answer">
-    </form>
-{% endif %}
+    <h1>Question Show</h1>
 
-{% for answer in answers %}
-    <p>Answer {{ answer.pk }}</p>
+    <p>Title: {{ question.title }}</p>
+    <p>Body: {{ question.body }}</p>
+    <p>Total Votes: {{ question.total_votes }}</p>
+    <p>Created by: {{ question.created_by }}</p>
+    <p>Created at: {{ question.created_at }}</p>
     {% if user.is_authenticated %}
-        {% if answer.created_by == user %}
-        <a href="{% url 'answer_edit' answer.pk %}">Edit</a>
-        <form action="{% url 'answer_delete' answer.pk %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Delete">
-        </form>
-        {% endif %}
+        <p>Bookmarked: {{ bookmarked }}</p>
     {% endif %}
-    <p>Body: {{answer.body}}</p>
-    <p>Created at: {{answer.created_at}}</p>
-    <p>Created by: {{answer.created_by}}</p>
-{% endfor %}
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'answer_new' question.pk %}" method="post">
+            {% csrf_token %}
+            {{ answer_form }}
+            <input type="submit" value="Post Your Answer">
+        </form>
+    {% endif %}
+
+    {% for answer in answers %}
+        <p>Answer {{ answer.pk }}</p>
+        {% if user.is_authenticated %}
+            {% if answer.created_by == user %}
+            <a href="{% url 'answer_edit' answer.pk %}">Edit</a>
+            <form action="{% url 'answer_delete' answer.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+        {% endif %}
+        <p>Body: {{answer.body}}</p>
+        <p>Created at: {{answer.created_at}}</p>
+        <p>Created by: {{answer.created_by}}</p>
+    {% endfor %}
+
+{% endblock %}

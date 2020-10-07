@@ -1,7 +1,13 @@
-<h1>New Question</h1>
+{% extends "questions/layout.html" %}
 
-<form action="{% url 'question_new' %}" method="post">
-    {% csrf_token %}
-    {{ new_question_form }}
-    <input type="submit" name="submit" value="Submit Question">
-</form>
+{% block body %}
+
+    <h1>New Question</h1>
+
+    <form action="{% url 'question_new' %}" method="post">
+        {% csrf_token %}
+        {{ new_question_form }}
+        <input type="submit" name="submit" value="Submit Question">
+    </form>
+
+{% endblock %}
