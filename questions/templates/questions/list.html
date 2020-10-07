@@ -2,7 +2,10 @@
 
 {% block body %}
 
-<h1>All Questions</h1>
+<div class="border">
+    <h1 class="d-inline align-top">All Questions</h1>
+    <a href="{% url 'question_new' %}" class="btn btn-primary float-right align-bottom">Ask Question</a>
+</div>
 
     <div class="questions_list">
 
