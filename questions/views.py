@@ -8,8 +8,13 @@ from .models import Question, Answer, Vote, Bookmark
 # ----- Forms -----
 
 class NewQuestionForm(forms.Form):
-    title = forms.CharField(label="Title")
-    body = forms.CharField(label="Body", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write a question...'}))
+    title = forms.CharField(label="Title", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Write a question...'}))
+    body = forms.CharField(label="Body", 
+        widget=forms.Textarea(attrs= {
+            'class':'form-control', 
+            'placeholder':'Include all the information someone would need to answer your question'
+        })
+    )
 
 class NewAnswerForm(forms.Form):
     body = forms.CharField(widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
@@ -42,7 +47,7 @@ def new(request):
             new_question.save()
             print("Sucess: Question saved")
 
-            return(HttpResponseRedirect(reverse("index")))
+            return(HttpResponseRedirect(reverse("question_show", kwargs={'question_id':new_question.pk})))
 
         # Invalid form data
         else:

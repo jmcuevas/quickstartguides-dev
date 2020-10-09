@@ -7,7 +7,7 @@
     <form action="{% url 'question_new' %}" method="post">
         {% csrf_token %}
         {{ new_question_form }}
-        <input type="submit" name="submit" value="Submit Question">
+        <input type="submit" name="submit" value="Submit Question" class="btn btn-primary">
     </form>
 
 {% endblock %}
