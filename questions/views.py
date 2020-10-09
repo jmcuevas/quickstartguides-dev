@@ -17,7 +17,7 @@ class NewQuestionForm(forms.Form):
     )
 
 class NewAnswerForm(forms.Form):
-    body = forms.CharField(widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
+    body = forms.CharField(label="", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
 
 # ----- Views Questions -----
 
