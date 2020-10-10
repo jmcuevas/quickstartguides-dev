@@ -2,12 +2,15 @@
 
 {% block body %}
 
-    <h1>Answer Edit {{ answer.pk }}</h1>
+    <h1>{{ question.title }}</h1>
 
+
+    <h6>Edit your answer:</h6>
     <form action="{% url 'answer_update' answer.pk %}" method="post">
         {% csrf_token %}
         {{ form }}
-        <input type="submit" name="submit" value="Save">
+        <input type="submit" name="submit" value="Save" class="btn btn-primary">
+        <a href="{% url 'question_show' question.pk %}" class="btn btn-secondary">Cancel</a>
     </form>
 
 {% endblock %}

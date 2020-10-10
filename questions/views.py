@@ -322,11 +322,13 @@ def answer_edit(request, answer_id):
 
 
     if request.user.is_authenticated and request.user == answer.created_by:
+        question = answer.question
         form_data = {"body": answer.body}
     
         return render(request, "questions/edit_answer.html", {
             "answer":answer, 
-            "form":NewAnswerForm(initial=form_data)})
+            "form":NewAnswerForm(initial=form_data),
+            "question": question})
 
     else:
         print("---User is not logged in or didn't created question---")
