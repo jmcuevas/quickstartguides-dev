@@ -7,70 +7,70 @@
     <a href="{% url 'question_new' %}" class="btn btn-primary float-right align-bottom">Ask Question</a>
 </div>
 
-    <div class="questions_list">
+    <!-- List -->
+    <div class="questions_list container p-0">
 
+        <!-- List: Question -->
         {% for question in questions %}
-        <div class="border p-2">
+        <div class="border p-2 row">
 
-            <!-- Actions: Upvote/Bookmark/Downvote -->
+            <!-- Question: Action buttons - Upvote/Bookmark/Downvote -->
             {% if user.is_authenticated %}
-            <div class="d-inline-block align-top">
-                <div class="d-block text-center">
-                    <!-- Upvote -->
-                    <a href="{% url 'question_upvote' question.pk %}" class="d-block">
-                        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
-                        </svg>
-                    </a>
-                    
-                    <!-- Bookmark -->
-                    {% if question.bookmarked_by_user %}
-                    <a href="{% url 'question_bookmark' question.pk %}" class="d-block">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"></path>
-                        </svg>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'question_bookmark' question.pk %}" class="d-block">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M4 0a2 2 0 0 0-2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4zm4.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.178.178 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.178.178 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.178.178 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.178.178 0 0 1-.134-.098L8.16 4.1z"></path>
-                        </svg>
-                    </a>
-                    {% endif %}
-                    
-                    <!-- Downvote -->
-                    <a href="{% url 'question_downvote' question.pk %}" class="d-block">
-                        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
-                        </svg>
-                    </a>
-                </div>
+            <div class="d-inline-block align-top col-1 text-center">
+                <!-- Actions: Upvote -->
+                <a href="{% url 'question_upvote' question.pk %}" class="d-block">
+                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-caret-up-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path>
+                    </svg>
+                </a>
+                
+                <!-- Actions: Bookmark -->
+                {% if question.bookmarked_by_user %}
+                <a href="{% url 'question_bookmark' question.pk %}" class="d-block">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"></path>
+                    </svg>
+                </a>
+                {% else %}
+                <a href="{% url 'question_bookmark' question.pk %}" class="d-block">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bookmark-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4 0a2 2 0 0 0-2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4zm4.16 4.1a.178.178 0 0 0-.32 0l-.634 1.285a.178.178 0 0 1-.134.098l-1.42.206a.178.178 0 0 0-.098.303L6.58 6.993c.042.041.061.1.051.158L6.39 8.565a.178.178 0 0 0 .258.187l1.27-.668a.178.178 0 0 1 .165 0l1.27.668a.178.178 0 0 0 .257-.187L9.368 7.15a.178.178 0 0 1 .05-.158l1.028-1.001a.178.178 0 0 0-.098-.303l-1.42-.206a.178.178 0 0 1-.134-.098L8.16 4.1z"></path>
+                    </svg>
+                </a>
+                {% endif %}
+                
+                <!-- Actions: Downvote -->
+                <a href="{% url 'question_downvote' question.pk %}" class="d-block">
+                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path>
+                    </svg>
+                </a>
             </div>
             {% endif %}
                 
-            <!-- Info: # of Votes & Answers -->
-            <div class="q-list-info d-inline-block px-2 align-top">
+            <!-- Question: Info - # of Votes & Answers -->
+            <div class="q-list-info d-inline-block px-2 align-top col-1">
+                <!-- Info: Votes -->
                 <div class="q-list-votes text-center">
                     <p class="my-0">0</p>
                     <p class="my-0">Votes</p>
                 </div>
+                <!-- Info: Answers -->
                 <div class="q-list-answers text-center">
                     <p class="my-0">0</p>
                     <p class="my-0">Answers</p>
                 </div>
             </div>
 
-            <!-- Info: Question title & body -->
-            <div class="q-list-summary d-inline-block align-top">
+            <!-- Question: Info - Question title & body -->
+            <div class="q-list-summary d-inline-block align-top col-10">
                 <a href="{% url 'question_show' question.pk %}" class="h5"> {{ question.title }}</a>
-                <p>{{ question.body }}</p>
-            </div>
-            
-            <!-- Actions: Edit & Delete -->
+
+                <!-- Question: Action buttons - Edit & Delete -->
             <div class="q-list-actions d-inline-block align-top float-right">
                 {% if user.is_authenticated %}
                     {% if question.created_by == user %}
-                    <!-- Edit -->
+                    <!-- Action: Edit -->
                     <a href="{% url 'question_edit' question.pk %}" class="d-inline">
                         <button type="button" class="btn btn-outline-primary">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +80,7 @@
                         </button>
                     </a>
 
-                    <!-- Delete -->
+                    <!-- Action: Delete -->
                     <form action="{% url 'question_delete' question.pk %}" method="post" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-primary">
@@ -93,6 +93,10 @@
                     {% endif %}
                 {% endif %}
             </div>
+                <p>{{ question.body }}</p>
+            </div>
+            
+            
         </div>
         
         {% endfor %}
