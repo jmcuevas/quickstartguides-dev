@@ -61,3 +61,7 @@ def register(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("login"))
+
+def profile(request, user_id):
+    profile_user = User.objects.get(pk=user_id)
+    return render(request, "users/profile.html", {"profile_user": profile_user})

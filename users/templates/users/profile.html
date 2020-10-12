@@ -1,0 +1,13 @@
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <h1>Username: {{profile_user.username}}</h1>
+    <p>First Name: {{profile_user.first_name}}</p>
+    <p>Last Name: {{profile_user.last_name}}</p>
+    <p>Email: {{profile_user.email}}</p>
+    <p>Date Joined {{profile_user.date_joined}}</p>
+
+    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+{% endblock %}
