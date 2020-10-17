@@ -58,28 +58,6 @@ def new(request):
     else:
         return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
 
-def list_bookmarked(request):
-    questions = Question.objects.all().order_by("-created_at")
-    bookmarked_questions = []
-    title = "Bookmarked Questions"
-
-    # Check if question is bookmarked by user
-    for question in questions:
-        try:
-            bookmark = Bookmark.objects.get(question=question, user=request.user) 
-            print(f"Bookmark: {bookmark.question}")
-            question.bookmarked_by_user = True
-            bookmarked_questions.append(question)
-        except:
-            question.bookmarked_by_user = False
-
-    print(questions)
-    print(bookmarked_questions)
-
-    return render(request, "questions/list.html", 
-    {"questions": bookmarked_questions,
-    "title":title })
-
 def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
     title = "All Questions"
@@ -95,6 +73,59 @@ def list_all(request):
     return render(request, "questions/list.html", 
     {"questions": questions,
     "title":title })
+
+def list_bookmarked(request):
+    questions = Question.objects.all().order_by("-created_at")
+    bookmarked_questions = []
+    title = "Bookmarked Questions"
+
+    # Check if question is bookmarked by user
+    for question in questions:
+        try:
+            bookmark = Bookmark.objects.get(question=question, user=request.user) 
+            print(f"Bookmark: {bookmark.question}")
+            question.bookmarked_by_user = True
+            bookmarked_questions.append(question)
+        except:
+            question.bookmarked_by_user = False
+
+        try:
+            bookmark = Bookmark.objects.get(question=question, user=request.user) 
+            question.bookmarked_by_user = True
+        except:
+            question.bookmarked_by_user = False
+
+    print(questions)
+    print(bookmarked_questions)
+
+    return render(request, "questions/list.html", 
+    {"questions": bookmarked_questions,
+    "title":title })
+
+def list_upvoted(request):
+    questions = Question.objects.all().order_by("-created_at")
+    upvoted_questions = []
+    title = "Upvoted Questions"
+
+    # Check if question is bookmarked by user
+    for question in questions:
+        try:
+            upvote = Vote.objects.get(question=question, user=request.user, upvote=True) 
+            print(f"-------Upvoted: {upvote.question}")
+            upvoted_questions.append(question)
+        except:
+            pass
+
+        try:
+            bookmark = Bookmark.objects.get(question=question, user=request.user) 
+            question.bookmarked_by_user = True
+        except:
+            question.bookmarked_by_user = False
+
+
+    return render(request, "questions/list.html", 
+        {"questions": upvoted_questions,
+        "title":title })
 
 def show(request, question_id):
     question = Question.objects.get(pk=question_id)

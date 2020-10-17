@@ -7,6 +7,7 @@ urlpatterns = [
     path("new", views.new, name="question_new"),
     path("all", views.list_all, name="questions_list_all"),
     path("bookmarked", views.list_bookmarked, name="questions_list_bookmarked"),
+    path("upvoted", views.list_upvoted, name="questions_list_upvoted"),
     path("show/<int:question_id>", views.show, name="question_show"),
     path("edit/<int:question_id>", views.edit, name="question_edit"),
     path("update/<int:question_id>", views.update, name="question_update"),
