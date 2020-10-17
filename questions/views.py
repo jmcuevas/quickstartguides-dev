@@ -334,7 +334,20 @@ def bookmark(request, question_id):
 
     
     return HttpResponseRedirect(reverse('questions_list_all'))
-            
+
+def search(request):
+    if request.method == "GET":
+        search_term = request.GET['search_term']
+        questions = Question.objects.filter(title__icontains=search_term).order_by("-created_at")
+        title = "Search results for: '" + search_term + "'"
+
+        return render(request, "questions/list.html", 
+            {"questions": questions,
+            "title":title })
+    else:
+        return HttpResponseRedirect(reverse("questions_list_all"))
+
+ 
 # ----- Views Answers -----
 
 def answer_new(request, question_id):
