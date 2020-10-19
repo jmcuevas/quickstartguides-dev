@@ -62,13 +62,15 @@ def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
     title = "All Questions"
 
-    # Check if question is bookmarked by user
     for question in questions:
+        # Check if question is bookmarked by user
         try:
             bookmark = Bookmark.objects.get(question=question, user=request.user) 
             question.bookmarked_by_user = True
         except:
             question.bookmarked_by_user = False
+
+        question.answers_count = question.answers.all().count()
 
     return render(request, "questions/list.html", 
     {"questions": questions,
@@ -95,12 +97,11 @@ def list_bookmarked(request):
         except:
             question.bookmarked_by_user = False
 
-    print(questions)
-    print(bookmarked_questions)
+        question.answers_count = question.answers.all().count()
 
     return render(request, "questions/list.html", 
-    {"questions": bookmarked_questions,
-    "title":title })
+        {"questions": bookmarked_questions,
+        "title":title })
 
 def list_upvoted(request):
     questions = Question.objects.all().order_by("-created_at")
@@ -122,6 +123,7 @@ def list_upvoted(request):
         except:
             question.bookmarked_by_user = False
 
+        question.answers_count = question.answers.all().count()
 
     return render(request, "questions/list.html", 
         {"questions": upvoted_questions,
@@ -130,18 +132,17 @@ def list_upvoted(request):
 def show(request, question_id):
     question = Question.objects.get(pk=question_id)
     answers = Answer.objects.filter(question=question)
+    question.answers_count = question.answers.all().count()
 
     try:
         bookmark = Bookmark.objects.get(question=question, user=request.user)
-        if bookmark:
-            bookmarked = True
+        question.bookmarked_by_user = True
     except:
-        bookmarked = False
+        question.bookmarked_by_user = False
 
     return render(request, "questions/show.html", {
         "question":question, 
         "answers":answers,
-        "bookmarked":bookmarked,
         "answer_form": NewAnswerForm() })
 
 def edit(request, question_id):
