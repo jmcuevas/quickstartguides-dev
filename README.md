@@ -1,4 +1,8 @@
 # CS50W Final Project
-jmcuevas
+Github username: jmcuevas
+edx username: elchaniux
 
-Testing Remote connection
+
+
+Questions is a web application developed in Django that allows users to create and answer questions.
+
