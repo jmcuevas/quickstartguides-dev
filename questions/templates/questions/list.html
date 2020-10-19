@@ -64,7 +64,7 @@
 
             <!-- Question: Info - Question title & body -->
             <div class="q-list-summary d-inline-block align-top col-10">
-                <a href="{% url 'question_show' question.pk %}" class="h5"> {{ question.title }}</a>
+                <a href="{% url 'question_show' question.pk %}" class="h5"> {{ question.title|truncatewords:12 }}</a>
 
                 <!-- Question: Action buttons - Edit & Delete -->
                 <div class="q-list-actions d-inline-block align-top float-right">
