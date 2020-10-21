@@ -56,7 +56,10 @@ def new(request):
 
     # Get request to questions/new
     else:
-        return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
+        if request.user.is_authenticated:
+            return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
+        else:
+            return(HttpResponseRedirect(reverse("login")))
 
 def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
