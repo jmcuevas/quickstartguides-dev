@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from .models import User
+from questions.models import Question, Answer
 
 
 def index(request):
@@ -64,4 +65,17 @@ def logout_view(request):
 
 def profile(request, user_id):
     profile_user = User.objects.get(pk=user_id)
-    return render(request, "users/profile.html", {"profile_user": profile_user})
+    questions = Question.objects.filter(created_by=profile_user)
+    answers = Answer.objects.filter(created_by=profile_user)
+    answered_questions = []
+
+    for answer in answers:
+        answered_questions.append(answer.question)
+
+    print(f"---Answers: {answers}")
+    print(f"---Answered questions: {answered_questions}")
+
+    return render(request, "users/profile.html", {
+        "profile_user": profile_user,
+        "questions": questions,
+        "answered_questions": answered_questions})
