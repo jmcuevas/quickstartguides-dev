@@ -66,6 +66,13 @@
             <div class="q-list-summary d-inline-block align-top col-10">
                 <a href="{% url 'question_show' question.pk %}" class="h5"> {{ question.title|truncatewords:12 }}</a>
 
+                <!-- Info: Tags -->
+                <div class="mb-2">
+                    {% for tag in question.tags.all %}
+                    <a href="" class="badge badge-info">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+
                 <!-- Question: Action buttons - Edit & Delete -->
                 <div class="q-list-actions d-inline-block align-top float-right">
                     {% if user.is_authenticated %}
