@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # Local Apps
     'questions',
     'users',
+
+    # External Apps
+    'taggit',
 ]
 
 MIDDLEWARE = [
