@@ -1,20 +1,30 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 from django import forms
 from .models import Question, Answer, Vote, Bookmark
 
 # ----- Forms -----
 
-class NewQuestionForm(forms.Form):
-    title = forms.CharField(label="Title", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Write a question...'}))
-    body = forms.CharField(label="Body", 
-        widget=forms.Textarea(attrs= {
-            'class':'form-control', 
-            'placeholder':'Include all the information someone would need to answer your question'
-        })
-    )
+# class NewQuestionForm(forms.Form):
+#     title = forms.CharField(label="Title", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Write a question...'}))
+#     body = forms.CharField(label="Body", 
+#         widget=forms.Textarea(attrs= {
+#             'class':'form-control', 
+#             'placeholder':'Include all the information someone would need to answer your question'
+#         })
+#     )
+
+class NewQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = [
+            'title',
+            'body',
+            'tags',
+        ]
 
 class NewAnswerForm(forms.Form):
     body = forms.CharField(label="", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
@@ -32,20 +42,24 @@ def new(request):
         
         # Valid form data
         if form.is_valid():
-            title = form.cleaned_data["title"]
-            body = form.cleaned_data["body"]
-            total_votes = 0
-            created_by = request.user
+            new_question = form.save(commit=False)
+            new_question.total_votes = 0
+            new_question.created_by = request.user
+            new_question.slug = slugify(new_question.title)
+        
 
-            # Create and save question
-            new_question = Question(
-                title=title, 
-                body=body, 
-                total_votes=total_votes, 
-                created_by=created_by)
-            
+            # Save question
             new_question.save()
-            print("Sucess: Question saved")
+            form.save_m2m() #Save Many-2-Many field in forms (tags)
+
+            print(f"---New Question title: {new_question.title}")
+            print(f"---New Question body: {new_question.body}")
+            print(f"---New Question tags: {new_question.tags}")
+            print(f"---New Question slug: {new_question.slug}")
+            print(f"---New Question total votes: {new_question.total_votes}")
+            print(f"---New Question created by: {new_question.created_by}")
+
+            print("---Sucess: Question saved")
 
             return(HttpResponseRedirect(reverse("question_show", kwargs={'question_id':new_question.pk})))
 
