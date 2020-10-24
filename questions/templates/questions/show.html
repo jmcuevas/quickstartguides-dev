@@ -34,7 +34,16 @@
                         </form>
                     {% endif %}
                 {% endif %}
-                <p>Asked by: {{ question.created_by }} on {{ question.created_at }}</p>
+
+                <!-- Info: Asked by -->
+                <p class="mb-0">Asked by: {{ question.created_by }} on {{ question.created_at }}</p>
+
+                <!-- Info: Tags -->
+                <div class="mb-2">
+                    {% for tag in question.tags.all %}
+                    <a href="" class="badge badge-info">{{ tag }}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     
