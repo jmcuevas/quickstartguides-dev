@@ -172,7 +172,7 @@ def edit(request, question_id):
         return HttpResponseRedirect(reverse("questions_list_all"))
 
     if request.user.is_authenticated and request.user == question.created_by:
-        form_data = {"title": question.title, "body": question.body}
+        form_data = {"title": question.title, "body": question.body, "tags":question.tags.all()}
     
         return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
 
@@ -196,19 +196,12 @@ def update(request, question_id):
 
     # User submited edit form
     if request.method == "POST":
-        form = NewQuestionForm(request.POST)
+        form = NewQuestionForm(request.POST, instance=question)
 
-        # Validate form data
+        # Validate form data & Save
         if form.is_valid():
-            new_title = form.cleaned_data["title"]
-            new_body = form.cleaned_data["body"]
-
-            question.title = new_title
-            question.body = new_body
-            question.save()
-
-            print("---Question saved---")
-
+            form.save()
+            
             return HttpResponseRedirect(reverse("question_show", kwargs={'question_id': question.pk}))
 
         else:
