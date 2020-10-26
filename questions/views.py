@@ -26,6 +26,12 @@ class NewQuestionForm(forms.ModelForm):
             'tags',
         ]
 
+    # Render Form elements with "form-control" class
+    def __init__(self, *args, **kwargs):
+        super(NewQuestionForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 class NewAnswerForm(forms.Form):
     body = forms.CharField(label="", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
 
@@ -172,9 +178,13 @@ def edit(request, question_id):
         return HttpResponseRedirect(reverse("questions_list_all"))
 
     if request.user.is_authenticated and request.user == question.created_by:
-        form_data = {"title": question.title, "body": question.body, "tags":question.tags.all()}
+        tags_names = []
+        for tag in question.tags.all():
+            tags_names.append(tag.name)
+
+        form_data = {"title": question.title, "body": question.body, "tags":tags_names}
     
-        return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data)})
+        return render(request, "questions/edit.html", {"question":question, "form":NewQuestionForm(initial=form_data), "form_data":form_data})
 
     else:
         print("---User is not logged in or didn't created question---")
