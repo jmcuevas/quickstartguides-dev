@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Local Apps
     'questions',
     'users',
+    'guides',
 
     # External Apps
     'taggit',
