@@ -45,9 +45,9 @@ def new(request):
 
             print("---Sucess: guide saved")
 
-            # Pending redirect to guide_show
-            # return(HttpResponseRedirect(reverse("guide_show", kwargs={'guide_id':new_guide.pk})))
-            return HttpResponse("Form Saved")
+            
+            return(HttpResponseRedirect(reverse("guide_show", kwargs={'guide_id':new_guide.pk})))
+            
 
         # Invalid form data
         else:
@@ -75,3 +75,61 @@ def list_all(request):
     return render(request, "guides/list.html", 
     {"guides": guides,
     "title":title })
+
+def edit(request, guide_id):
+
+    # Check if guide exists
+    try:
+        guide = Guide.objects.get(pk=guide_id)
+    except Guide.DoesNotExist:
+        print("---Guide does not exist---")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+    if request.user.is_authenticated and request.user == guide.created_by:
+        tags_names = []
+        for tag in guide.tags.all():
+            tags_names.append(tag.name)
+
+        form_data = {"title": guide.title, "content": guide.content, "tags":tags_names}
+    
+        return render(request, "guides/edit.html", {"guide":guide, "form":NewGuideForm(initial=form_data), "form_data":form_data})
+
+    else:
+        print("---User is not logged in or didn't created guide---")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+def update(request, guide_id):
+
+    # Check if Guide exists
+    try:
+        guide = Guide.objects.get(pk=guide_id)
+    except Guide.DoesNotExist:
+        print("---Guide does not exists---")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+    # User should have created Guide to update
+    if not (request.user == guide.created_by):
+        print("---User didn't created guide")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+    # User submited edit form
+    if request.method == "POST":
+        form = NewGuideForm(request.POST, instance=guide)
+
+        # Validate form data & Save
+        if form.is_valid():
+            form.save()
+            
+            return HttpResponseRedirect(reverse("guide_show", kwargs={'guide_id': guide.pk}))
+
+        else:
+            print("---Guide data is not valid---")
+            return HttpResponseRedirect(reverse("guides_list_all"))
+
+    # Request method is other than POST
+    else:
+        print("---Method is not post---")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+def delete(request, guide_id):
+    pass
