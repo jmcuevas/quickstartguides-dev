@@ -1,1 +1,39 @@
-<h1>Guide show</h1>
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <!-- Guide -->
+    <div>
+
+        <!-- Guide: Title -->
+        <div class="border-bottom">   
+            <!-- Guide Info: title, created by & created at -->
+            <div class="d-inline-block">
+                <!-- Guide: Title -->
+                <h1 class="d-inline">{{ guide.title }}</h1>
+
+                <!-- Info: Author -->
+                <p class="mb-0">Written by: {{ guide.created_by }} on {{ guide.created_at }}</p>
+
+                <!-- Info: Tags -->
+                <div class="mb-2">
+                    {% for tag in guide.tags.all %}
+                    <a href="" class="badge badge-info">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+        <!-- Guide: Content -->
+        <div class="container p-0">
+            <div class="p-2 row">
+                        
+                <div class="q-list-summary d-inline-block align-top col-10">
+                    <p class="" >{{ guide.content }}</p>  
+                </div>
+
+            </div>    
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse
@@ -60,3 +60,9 @@ def new(request):
             return render(request, 'guides/new.html')
         else:
             return(HttpResponseRedirect(reverse("login")))
+
+def show(request, guide_id):
+    guide = get_object_or_404(Guide, pk=guide_id)
+
+    return render(request, "guides/show.html", {
+        "guide":guide })
