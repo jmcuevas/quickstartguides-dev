@@ -1,0 +1,27 @@
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <h1>New Guide</h1>
+
+    <form action="{% url 'guide_new' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" placeholder="Add title..." required id="id_title" value="{{ form_data.title }}">
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <textarea class="form-control" name="content" cols="40" rows="10" required id="id_content" placeholder="Add body...">{{ form_data.content }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <input type="text" data-role="tagsinput" class="form-control" name="tags" required id="id_tags" placeholder="Add tag..." value="{% for tag in form_data.tags %}{{ tag }},{% endfor %}">
+        </div>
+        
+        <input type="submit" name="submit" value="Save Guide" class="btn btn-primary">
+        <a href="{% url 'questions_list_all' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+
+{% endblock %}
