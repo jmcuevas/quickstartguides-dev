@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse
@@ -66,3 +66,12 @@ def show(request, guide_id):
 
     return render(request, "guides/show.html", {
         "guide":guide })
+
+def list_all(request):
+    guides = get_list_or_404(Guide)
+    # guides = Question.objects.all().order_by("-created_at")
+    title = "All Guides"
+
+    return render(request, "guides/list.html", 
+    {"guides": guides,
+    "title":title })
