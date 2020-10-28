@@ -132,4 +132,23 @@ def update(request, guide_id):
         return HttpResponseRedirect(reverse("guides_list_all"))
 
 def delete(request, guide_id):
-    pass
+    # Check if guide exists
+    try:
+        guide = Guide.objects.get(pk=guide_id)
+    except Guide.DoesNotExist:
+        print("---Guide does not exists---")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+    # User should have created Guide to update
+    if not (request.user == guide.created_by):
+        print("---User didn't created guide")
+        return HttpResponseRedirect(reverse("guides_list_all"))
+
+    # User clicked on Delete button (Post request)
+    if request.method == "POST":
+        print("---Guide deleted---")
+        guide.delete()
+    else:
+        print("---Guides views.delete: not POST method---")
+
+    return HttpResponseRedirect(reverse('guides_list_all'))

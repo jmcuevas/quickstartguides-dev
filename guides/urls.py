@@ -10,5 +10,4 @@ urlpatterns = [
     path("edit/<int:guide_id>", views.edit, name="guide_edit"),
     path("update/<int:guide_id>", views.update, name="guide_update"),
     path("delete/<int:guide_id>", views.delete, name="guide_delete"),
-
 ]
