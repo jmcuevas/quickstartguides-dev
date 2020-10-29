@@ -19,14 +19,14 @@
         <header>
             <!-- Fixed navbar -->
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                <a class="navbar-brand" href="{% url 'questions_list_all' %}">Questions</a>
+                <a class="navbar-brand" href="{% url 'questions_list_all' %}">[HD Logo]</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse row" id="navbarCollapse">
                     <!-- Navbar Buttons -->
                     <ul class="navbar-nav mr-auto col-4">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="{% url 'questions_list_all' %}">All <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
@@ -34,8 +34,31 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'questions_list_upvoted' %}">Upvoted</a>
+                        </li> -->
+
+                        <!-- Navbar: Questions Guides & Tags-->
+                        <li>
+                            <div class="dropdown show">
+                                <a class="nav-link dropdown-toggle" href="{% url 'questions_list_all' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Questions
+                                </a>
+                              
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'questions_list_all' %}">All <span class="sr-only">(current)</span></a>
+                                    <a class="dropdown-item" href="{% url 'questions_list_bookmarked' %}">Bookmarked</a>
+                                    <a class="dropdown-item" href="{% url 'questions_list_upvoted' %}">Upvoted</a>
+                                </div>
+                            </div>
                         </li>
+
+                        <li>
+                            <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
+                        </li>
+
+
                     </ul>
+
+
                     <!-- Search bar -->
                     <form action="{% url 'questions_list_search' %}" class="form-inline mt-2 mt-md-0 col-7" method="GET">
                         <input id="search_term" class="form-control mr-sm-2 col-9" type="text" placeholder="Search" aria-label="Search" name="search_term">
@@ -56,6 +79,8 @@
                     <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
                     {% endif %}
                 </div>
+
+                
             </nav>
         </header>
 
