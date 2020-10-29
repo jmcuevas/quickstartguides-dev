@@ -27,11 +27,13 @@
                     <!-- Navbar Buttons -->
                     <ul class="navbar-nav mr-auto col-4">
 
-                        <!-- Navbar: Questions Guides & Tags-->
+                        <!-- Navbar Button: Questions-->
                         <li>
                             <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
                         </li>
 
+                        <!-- Navbar Button: Guides-->
+                        {% if user.is_authenticated %}
                         <li>
                             <div class="dropdown show">
                                 <a class="nav-link dropdown-toggle" href="{% url 'questions_list_all' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,6 +47,11 @@
                                 </div>
                             </div>
                         </li>
+                        {% else %}
+                        <li>
+                            <a class="nav-link" href="{% url 'questions_list_all' %}">Questions</a>
+                        </li>
+                        {% endif %}
                     </ul>
 
 
