@@ -26,17 +26,12 @@
                 <div class="collapse navbar-collapse row" id="navbarCollapse">
                     <!-- Navbar Buttons -->
                     <ul class="navbar-nav mr-auto col-4">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="{% url 'questions_list_all' %}">All <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'questions_list_bookmarked' %}">Bookmarked</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'questions_list_upvoted' %}">Upvoted</a>
-                        </li> -->
 
                         <!-- Navbar: Questions Guides & Tags-->
+                        <li>
+                            <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
+                        </li>
+
                         <li>
                             <div class="dropdown show">
                                 <a class="nav-link dropdown-toggle" href="{% url 'questions_list_all' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,12 +45,6 @@
                                 </div>
                             </div>
                         </li>
-
-                        <li>
-                            <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
-                        </li>
-
-
                     </ul>
 
 
