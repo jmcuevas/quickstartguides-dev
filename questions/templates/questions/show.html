@@ -139,6 +139,8 @@
                 </div>
                 <p>{{answer.body}}</p>
             </div>
+            {% empty %}
+            <p>No answers yet</p>
             {% endfor %}
         </div>
 
