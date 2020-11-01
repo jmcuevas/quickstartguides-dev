@@ -15,7 +15,7 @@ class Question(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Answer(models.Model):
-    body = models.TextField()
+    body = RichTextField()
     question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name="answers")
     created_by = models.ForeignKey(user_models.User, on_delete=models.CASCADE, related_name="answers")
     created_at = models.DateTimeField(auto_now_add=True)
