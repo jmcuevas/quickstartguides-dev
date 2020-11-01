@@ -8,6 +8,7 @@
     <h6>Edit your answer:</h6>
     <form action="{% url 'answer_update' answer.pk %}" method="post">
         {% csrf_token %}
+        {{ form.media }}
         {{ form }}
         <input type="submit" name="submit" value="Save" class="btn btn-primary">
         <a href="{% url 'question_show' question.pk %}" class="btn btn-secondary">Cancel</a>
