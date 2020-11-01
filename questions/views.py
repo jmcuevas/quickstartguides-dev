@@ -32,8 +32,21 @@ class NewQuestionForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-class NewAnswerForm(forms.Form):
-    body = forms.CharField(label="", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
+# class NewAnswerForm(forms.Form):
+#     body = forms.CharField(label="", widget=forms.Textarea(attrs= {'class':'form-control', 'placeholder':'Write your answer...'}))
+
+class NewAnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = [
+            'body',
+        ]
+    
+    # Render Form elements with "form-control" class
+    def __init__(self, *args, **kwargs):
+        super(NewAnswerForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 # ----- Views Questions -----
 
