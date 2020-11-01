@@ -6,13 +6,16 @@
 
     <form action="{% url 'guide_new' %}" method="post">
         {% csrf_token %}
+        {{ new_guide_form.media }}
         <div class="form-group">
             <label>Title</label>
             <input type="text" class="form-control" name="title" placeholder="Add title..." required id="id_title" value="{{ form_data.title }}">
         </div>
         <div class="form-group">
             <label>Content</label>
-            <textarea class="form-control" name="content" cols="40" rows="10" required id="id_content" placeholder="Add body...">{{ form_data.content }}</textarea>
+            <div class="d-block">
+                {{ new_guide_form.content }}
+            </div>
         </div>
         <div class="form-group">
             <label>Tags</label>
