@@ -7,13 +7,16 @@
     <h6>Edit your question:</h6>
     <form action="{% url 'question_update' question.pk %}" method="post">
         {% csrf_token %}
+        {{ form.media }}
         <div class="form-group">
             <label>Title</label>
             <input type="text" class="form-control" name="title" placeholder="Edit title..." required id="id_title" value="{{ form_data.title }}">
         </div>
         <div class="form-group">
             <label>Body</label>
-            <textarea class="form-control" name="body" cols="40" rows="10" required id="id_body" placeholder="Edit body...">{{ form_data.body }}</textarea>
+            <div class="d-block">
+                {{ form.body }}
+            </div>
         </div>
         <div class="form-group">
             <label>Tags</label>
