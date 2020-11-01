@@ -137,7 +137,7 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                <p>{{answer.body}}</p>
+                <p>{{answer.body|safe}}</p>
             </div>
             {% empty %}
             <p>No answers yet</p>
@@ -150,6 +150,7 @@
             {% if user.is_authenticated %}
             <form action="{% url 'answer_new' question.pk %}" method="post">
                 {% csrf_token %}
+                {{ answer_form.media }}
                 {{ answer_form }}
                 <input type="submit" value="Post Your Answer" class="btn btn-primary">
             </form>
