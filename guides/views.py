@@ -57,7 +57,7 @@ def new(request):
     # Get request to guides/new
     else:
         if request.user.is_authenticated:
-            return render(request, 'guides/new.html')
+            return render(request, 'guides/new.html', {"new_guide_form": NewGuideForm()})
         else:
             return(HttpResponseRedirect(reverse("login")))
 
