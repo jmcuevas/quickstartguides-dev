@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # External Apps
     'taggit',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,21 @@ STATIC_URL = '/static/'
 # Static Files load for development only (Refer to Stack overflow issue below)
 # https://stackoverflow.com/questions/6014663/django-static-file-not-found
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+
+
+# CKEditor Config
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbarCanCollapse': True,
+        'toolbar': 'Custom',
+        'width': "100%",
+        'toolbar_Custom': [
+            ['Format', 'Font', 'FontSize'],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ['CopyFormatting', 'RemoveFormat', 'Source'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'HorizontalRule', 'Table'],
+            ['Link', 'Unlink'],
+            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+        ]
+    }
+}
