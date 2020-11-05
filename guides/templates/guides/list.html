@@ -15,16 +15,9 @@
         <div class="border p-2 row">
 
             <!-- Guide: Info - Guide title & content -->
-            <div class="g-list-summary d-inline-block align-top col-10">
+            <div class="g-list-summary d-inline-block align-top">
                 <a href="{% url 'guide_show' guide.pk %}" class="h5"> {{ guide.title|truncatewords:12 }}</a>
-
-                <!-- Info: Tags -->
-                <div class="mb-2">
-                    {% for tag in guide.tags.all %}
-                    <a href="" class="badge badge-info">#{{ tag }}</a>
-                    {% endfor %}
-                </div>
-
+                
                 <!-- Guide: Action buttons - Edit & Delete -->
                 <div class="g-list-actions d-inline-block align-top float-right">
                     {% if user.is_authenticated %}
@@ -52,7 +45,17 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                <p>{{ guide.body|truncatewords:30 }}</p>
+
+                <!-- Guide: Description -->
+                <p>{{ guide.description|truncatewords:60 }}</p>
+
+                <!-- Info: Tags -->
+                <div class="mb-2">
+                    {% for tag in guide.tags.all %}
+                    <a href="" class="badge badge-info">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+
             </div>
             
             
