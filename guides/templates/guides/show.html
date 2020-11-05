@@ -6,7 +6,7 @@
     <div>
 
         <!-- Guide: Title -->
-        <div class="border-bottom">   
+        <div class="border-bottom text-center">   
             <!-- Guide Info: title, created by & created at -->
             <div class="d-inline-block">
                 <!-- Guide: Title -->
@@ -51,6 +51,11 @@
         <div class="container p-0">
             <div class="p-2">
                         
+                <div class="align-top">
+                    <h1>General Description:</h1>
+                    <p class="" >{{ guide.description }}</p>  
+                </div>
+
                 <div class="align-top">
                     <p class="" >{{ guide.content|safe }}</p>  
                 </div>
