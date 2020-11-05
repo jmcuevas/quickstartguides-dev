@@ -8,17 +8,23 @@
         {% csrf_token %}
         {{ new_guide_form.media }}
         <div class="form-group">
-            <label>Title</label>
+            <label>Title:</label>
             <input type="text" class="form-control" name="title" placeholder="Add title..." required id="id_title" value="{{ form_data.title }}">
         </div>
         <div class="form-group">
-            <label>Content</label>
+            <label>General Description:</label>
+            <div class="d-block">
+                {{ new_guide_form.description }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Content:</label>
             <div class="d-block">
                 {{ new_guide_form.content }}
             </div>
         </div>
         <div class="form-group">
-            <label>Tags</label>
+            <label>Tags:</label>
             <input type="text" data-role="tagsinput" class="form-control" name="tags" required id="id_tags" placeholder="Add tag..." value="{% for tag in form_data.tags %}{{ tag }},{% endfor %}">
         </div>
         

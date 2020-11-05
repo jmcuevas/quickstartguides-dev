@@ -13,6 +13,7 @@ class NewGuideForm(forms.ModelForm):
         model = Guide
         fields = [
             'title',
+            'description',
             'content',
             'tags',
         ]
@@ -90,7 +91,7 @@ def edit(request, guide_id):
         for tag in guide.tags.all():
             tags_names.append(tag.name)
 
-        form_data = {"title": guide.title, "content": guide.content, "tags":tags_names}
+        form_data = {"title": guide.title, "description": guide.description, "content": guide.content, "tags":tags_names}
     
         return render(request, "guides/edit.html", {"guide":guide, "form":NewGuideForm(initial=form_data), "form_data":form_data})
 
