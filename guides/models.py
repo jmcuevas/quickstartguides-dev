@@ -8,6 +8,7 @@ from ckeditor.fields import RichTextField
 
 class Guide(models.Model):
     title = models.CharField(max_length=255)
+    description = models.TextField()
     content = RichTextField()
     slug = models.SlugField(unique=True, max_length=100)
     tags = TaggableManager()
