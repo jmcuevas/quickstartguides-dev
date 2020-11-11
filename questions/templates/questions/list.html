@@ -19,7 +19,7 @@
                 <!-- Info: Votes -->
                 <div class="q-list-votes">
                     <p class="my-0">{{ question.total_votes|default:"0" }}</p>
-                    <p class="my-0">Votes</p>
+                    <p class="my-0">Likes</p>
                 </div>
                 <!-- Info: Answers -->
                 <div class="q-list-answers">
@@ -47,18 +47,20 @@
                     <!-- Question: Action buttons - Upvote/Bookmark/Downvote (Like & Save) -->
                     {% if user.is_authenticated %}
                     <div class="d-inline-block align-toptext-center">
-                        <!-- Actions: Upvote -->
+                        <!-- Actions: Upvote & Downvote (Like) -->
+                        {% if question.liked_by_user %}
+                        <a href="{% url 'question_downvote' question.pk %}" class="btn btn-outline-primary">Liked</a>
+                        {% else %}
                         <a href="{% url 'question_upvote' question.pk %}" class="btn btn-outline-primary">Like</a>
+                        {% endif %}
                         
-                        <!-- Actions: Bookmark -->
+                        <!-- Actions: Bookmark(Save) -->
                         {% if question.bookmarked_by_user %}
                         <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary">Saved</a>
                         {% else %}
                         <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary">Save</a>
                         {% endif %}
                         
-                        <!-- Actions: Downvote -->
-                        <a href="{% url 'question_downvote' question.pk %}" class="btn btn-outline-primary">Liked</a>
                     </div>
                     {% endif %}
 
