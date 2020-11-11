@@ -177,11 +177,19 @@ def show(request, question_id):
     answers = Answer.objects.filter(question=question)
     question.answers_count = question.answers.all().count()
 
+    # Check if question is bookmarked by user
     try:
         bookmark = Bookmark.objects.get(question=question, user=request.user)
         question.bookmarked_by_user = True
     except:
         question.bookmarked_by_user = False
+
+    # Check if question is Voted by user
+    try:
+        upvote = Vote.objects.get(question=question, user=request.user, upvote=True)
+        question.liked_by_user = True
+    except:
+        question.liked_by_user = False
 
     return render(request, "questions/show.html", {
         "question":question, 
