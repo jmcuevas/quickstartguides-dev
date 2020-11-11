@@ -106,6 +106,13 @@ def list_all(request):
         except:
             question.bookmarked_by_user = False
 
+        # Check if question is Voted by user
+        try:
+            upvote = Vote.objects.get(question=question, user=request.user, upvote=True)
+            question.liked_by_user = True
+        except:
+            question.liked_by_user = False
+
         question.answers_count = question.answers.all().count()
 
     return render(request, "questions/list.html", 
