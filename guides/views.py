@@ -153,3 +153,15 @@ def delete(request, guide_id):
         print("---Guides views.delete: not POST method---")
 
     return HttpResponseRedirect(reverse('guides_list_all'))
+
+def search(request):
+    if request.method == "GET":
+        search_term = request.GET['search_term']
+        guides = Guide.objects.filter(title__icontains=search_term).order_by("-created_at")
+        title = "Search results for: '" + search_term + "'"
+
+        return render(request, "guides/list.html", 
+            {"guides": guides,
+            "title":title })
+    else:
+        return HttpResponseRedirect(reverse("guides_list_all"))
