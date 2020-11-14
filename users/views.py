@@ -10,7 +10,7 @@ from questions.models import Question, Answer
 
 def index(request):
     if (request.user.is_authenticated):
-        return HttpResponseRedirect(reverse('questions_list_all'))
+        return HttpResponseRedirect(reverse('guides_list_all'))
     else:
         return render(request, "users/login.html")
 
