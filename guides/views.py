@@ -69,8 +69,13 @@ def show(request, guide_id):
         "guide":guide })
 
 def list_all(request):
-    guides = get_list_or_404(Guide)
-    # guides = Question.objects.all().order_by("-created_at")
+    # Check if guides list exists
+    try:
+        guides = Guide.objects.all().order_by("title")
+    except Guide.DoesNotExist:
+        print("---Guides list does not exist---")
+        return HttpResponse("Error please try again")
+
     title = "All Guides"
 
     return render(request, "guides/list.html", 
