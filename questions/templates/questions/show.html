@@ -26,7 +26,7 @@
                 <h1 class="d-inline">{{ question.title }}</h1>
 
                 <!-- Info: Asked by -->
-                <p class="mb-0">Asked by: {{ question.created_by }} on {{ question.created_at }}</p>
+                <p class="mb-0">Asked by: {{ question.created_by.first_name }} {{ question.created_by.last_name }} on {{ question.created_at }}</p>
 
                 <!-- Info: Tags -->
                 <div class="mb-2">
@@ -107,7 +107,7 @@
             {% for answer in answers %}
             <div class="border-bottom pt-4">
                 <div class="pb-4">
-                    <p class="d-inline">Answered by: {{answer.created_by}} on {{answer.created_at}}</p>
+                    <p class="d-inline">Answered by: {{ answer.created_by.first_name }} {{ answer.created_by.last_name }} on {{answer.created_at}}</p>
                     {% if user.is_authenticated %}
                         {% if answer.created_by == user %}
                         <!-- Actions: Edit -->
