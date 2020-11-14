@@ -12,7 +12,7 @@
             <h3>Trade Name</h3>
             
             <!-- Info: Author -->
-            <p class="mb-0 d-inline">Written by: {{ guide.created_by }} on {{ guide.created_at }}</p>
+            <p class="mb-0 d-inline">Written by: {{ guide.created_by.first_name }} {{ guide.created_by.last_name }} on {{ guide.created_at }}</p>
 
             <!-- Guide Actions: Edit & Delete -->
             {% if user.is_authenticated %}
