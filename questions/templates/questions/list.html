@@ -49,16 +49,16 @@
                     <div class="d-inline-block align-toptext-center">
                         <!-- Actions: Upvote & Downvote (Like) -->
                         {% if question.liked_by_user %}
-                        <a href="{% url 'question_downvote' question.pk %}" class="btn btn-outline-primary">Liked</a>
+                        <a href="{% url 'question_downvote' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Unlike question">Liked</a>
                         {% else %}
-                        <a href="{% url 'question_upvote' question.pk %}" class="btn btn-outline-primary">Like</a>
+                        <a href="{% url 'question_upvote' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Like if this question has been usefull to you, shows research effort and is clear">Like</a>
                         {% endif %}
                         
                         <!-- Actions: Bookmark(Save) -->
                         {% if question.bookmarked_by_user %}
-                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary">Saved</a>
+                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Delete question from your saved list">Saved</a>
                         {% else %}
-                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary">Save</a>
+                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Add question to your saved list">Save</a>
                         {% endif %}
                         
                     </div>
