@@ -25,7 +25,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('questions_list_all'))
+            return HttpResponseRedirect(reverse('guides_list_all'))
         else:
             return render(request, "users/login.html", {
                 "message": "Invalid username and/or password."
@@ -59,7 +59,7 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse('questions_list_all'))
+        return HttpResponseRedirect(reverse('guides_list_all'))
     else:
         return render(request, "users/register.html")
 
