@@ -139,9 +139,9 @@ STATIC_URL = '/static/'
 # https://stackoverflow.com/questions/6014663/django-static-file-not-found
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 
 # CKEditor Config
