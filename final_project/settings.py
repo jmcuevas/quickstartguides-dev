@@ -140,7 +140,7 @@ MEDIA_URL = '/media/'
 # Static Files load for development only (Refer to Stack overflow issue below)
 # https://stackoverflow.com/questions/6014663/django-static-file-not-found
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
