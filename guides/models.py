@@ -2,6 +2,7 @@ from django.db import models
 from users import models as user_models
 from taggit.managers import TaggableManager
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 # Create your models here.
@@ -9,7 +10,7 @@ from ckeditor.fields import RichTextField
 class Guide(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    content = RichTextField()
+    content = RichTextUploadingField()
     slug = models.SlugField(unique=True, max_length=100)
     tags = TaggableManager()
     division = models.CharField(max_length=100)
