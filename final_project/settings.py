@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # External Apps
     'taggit',
     'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -134,10 +135,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # Static Files load for development only (Refer to Stack overflow issue below)
 # https://stackoverflow.com/questions/6014663/django-static-file-not-found
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+MEDIA_ROOT = 'media/'
 
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
@@ -161,6 +164,8 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
-# Login URL - User for loging_required decorator
+
+# Login URL - Used for loging_required decorator
 LOGIN_URL = '/users/login/'
