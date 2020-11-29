@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from django import forms
 from .models import Guide
@@ -24,9 +25,11 @@ class NewGuideForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+@login_required()
 def index(request):
     return render(request, "guides/index.html")
 
+@login_required
 def new(request):
 
     # Submit new guide Form
@@ -57,17 +60,17 @@ def new(request):
 
     # Get request to guides/new
     else:
-        if request.user.is_authenticated:
-            return render(request, 'guides/new.html', {"new_guide_form": NewGuideForm()})
-        else:
-            return(HttpResponseRedirect(reverse("login")))
+        return render(request, 'guides/new.html', {"new_guide_form": NewGuideForm()})
+        
 
+@login_required
 def show(request, guide_id):
     guide = get_object_or_404(Guide, pk=guide_id)
 
     return render(request, "guides/show.html", {
         "guide":guide })
 
+@login_required
 def list_all(request):
     # Check if guides list exists
     try:
@@ -82,6 +85,7 @@ def list_all(request):
     {"guides": guides,
     "title":title })
 
+@login_required
 def edit(request, guide_id):
 
     # Check if guide exists
@@ -91,7 +95,7 @@ def edit(request, guide_id):
         print("---Guide does not exist---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
-    if request.user.is_authenticated and request.user == guide.created_by:
+    if request.user == guide.created_by:
         tags_names = []
         for tag in guide.tags.all():
             tags_names.append(tag.name)
@@ -104,6 +108,7 @@ def edit(request, guide_id):
         print("---User is not logged in or didn't created guide---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
+@login_required
 def update(request, guide_id):
 
     # Check if Guide exists
@@ -137,6 +142,7 @@ def update(request, guide_id):
         print("---Method is not post---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
+@login_required
 def delete(request, guide_id):
     # Check if guide exists
     try:
@@ -159,6 +165,7 @@ def delete(request, guide_id):
 
     return HttpResponseRedirect(reverse('guides_list_all'))
 
+@login_required
 def search(request):
     if request.method == "GET":
         search_term = request.GET['search_term']
