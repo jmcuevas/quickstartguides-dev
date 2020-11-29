@@ -7,6 +7,8 @@ from django.urls import reverse
 from .models import User
 from questions.models import Question, Answer
 
+# Only emails in ALLOWED_DOMAIN can create accounts
+ALLOWED_DOMAIN = ["@hdcco.com"]
 
 def index(request):
     if (request.user.is_authenticated):
@@ -36,9 +38,17 @@ def login_view(request):
 def register(request):
     if request.method == "POST":
         email = request.POST["email"]
+        domain = email[email.index('@') : ]
+        username = email[ : email.index('@')]
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
-        username = request.POST["username"]
+        
+        # Only emails with allowed domain can register
+        if not (domain in ALLOWED_DOMAIN):
+            print("---Account not created. Only Allowed domains can create account")
+            return render(request, "users/register.html", {
+                "message": "Account not created. Only Allowed domains can create account"
+            })
 
         # Ensure password matches confirmation
         password = request.POST["password"]
