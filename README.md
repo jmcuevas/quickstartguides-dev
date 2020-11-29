@@ -15,4 +15,5 @@ Releases:
     - 004: Guides Admin & Collaborators permissions
         - Guides can only be edited by admin staff or assigned collaborators
         - Guides can only be deleted by admin staff
+        - Collaborators can only be assigned by Admin staff in the admin interface
 
