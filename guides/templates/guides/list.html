@@ -21,7 +21,7 @@
                     <!-- Guide: Action buttons - Edit & Delete -->
                     <div class="g-list-actions d-inline-block align-top">
                         {% if user.is_authenticated %}
-                            {% if guide.created_by == user %}
+                            {% if guide in editable_guides or user.is_staff %}
                             <!-- Action: Edit -->
                             <a href="{% url 'guide_edit' guide.pk %}" class="d-inline badge">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
