@@ -12,4 +12,7 @@ Releases:
         - When the company logo is clicked the link will redirect to guides_list_all URL
     - 003: Add photos to Guide's content text
         - Using CKEditor the user can upload photos to be included as part of the Guide's content
+    - 004: Guides Admin & Collaborators permissions
+        - Guides can only be edited by admin staff or assigned collaborators
+        - Guides can only be deleted by admin staff
 
