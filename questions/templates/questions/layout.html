@@ -24,40 +24,14 @@
             <!-- Fixed navbar -->
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <a class="navbar-brand m-0 mr-4" href="#"><img height="38" src="https://s3.amazonaws.com/owler-image/logo/hathaway-dinwiddie_owler_20190905_071807_original.jpg" alt=""></a>
+                {%  if user.is_authenticated %}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse row" id="navbarCollapse">
+                    <h1>Test</h1>
                     <!-- Navbar Buttons -->
                     <ul class="navbar-nav mr-auto col-4">
-
-                        <!-- Section hidden pending review -->
-                            <!-- Navbar Button: Questions-->
-                            <!-- <li>
-                                <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
-                            </li> -->
-
-                            <!-- Navbar Button: Guides-->
-                            <!-- {% if user.is_authenticated %}
-                            <li>
-                                <div class="dropdown show">
-                                    <a class="nav-link dropdown-toggle" href="{% url 'questions_list_all' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Questions
-                                    </a>
-                                
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="{% url 'questions_list_all' %}">All <span class="sr-only">(current)</span></a>
-                                        <a class="dropdown-item" href="{% url 'questions_list_bookmarked' %}">Bookmarked</a>
-                                        <a class="dropdown-item" href="{% url 'questions_list_upvoted' %}">Upvoted</a>
-                                    </div>
-                                </div>
-                            </li>
-                            {% else %}
-                            <li>
-                                <a class="nav-link" href="{% url 'questions_list_all' %}">Questions</a>
-                            </li>
-                            {% endif %} -->
-                        <!-- End section hidden -->
 
                         <!-- Example split danger button -->
                         <div class="btn-group">
@@ -87,7 +61,6 @@
                         <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
                     </form>
                     <!-- User Profile button -->
-                    {%  if user.is_authenticated %}
                     <a href="{% url 'user_profile' user.pk %}" class="col-1">
                         <button type="button" class="btn text-secondary">
                             <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -97,10 +70,10 @@
                             </svg>
                         </button>
                     </a>
-                    {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
-                    {% endif %}
                 </div>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+                {% endif %}
 
                 
             </nav>
@@ -120,7 +93,7 @@
                 <p>Designed & developed by cuevasj</p>
                 <p>&#169; 2020</p>
             </div>
-            </footer>
+        </footer>
     <!-- Bootstrap: jQuery, Popper.js & Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
