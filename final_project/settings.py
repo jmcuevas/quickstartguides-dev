@@ -155,7 +155,7 @@ CKEDITOR_CONFIGS = {
             ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
             ['CopyFormatting', 'RemoveFormat', 'Source'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'HorizontalRule', 'Table'],
-            ['Link', 'Unlink'],
+            ['Link', 'Unlink', 'Image'],
             ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
         ]
     }
