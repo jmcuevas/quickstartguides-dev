@@ -1,0 +1,31 @@
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <h1>New Question</h1>
+
+    <form action="{% url 'question_new' %}" method="post">
+        {% csrf_token %}
+        {{ new_question_form.media }}
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" placeholder="Add title..." required id="id_title" value="{{ form_data.title }}">
+        </div>
+        <div class="form-group">
+            <label>Body</label>
+            <div class="d-block">
+                {{ new_question_form.body }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <input type="text" data-role="tagsinput" class="form-control" name="tags" required id="id_tags" placeholder="Add tag..." value="{% for tag in form_data.tags %}{{ tag }},{% endfor %}">
+        </div>
+        
+        <input type="submit" name="submit" value="Submit Question" class="btn btn-primary">
+        <a href="{% url 'questions_list_all' %}" class="btn btn-secondary">Cancel</a>
+
+        
+    </form>
+
+{% endblock %}

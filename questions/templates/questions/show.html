@@ -1,0 +1,159 @@
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <!-- Question -->
+    <div>
+
+        <!-- Question: Title -->
+        <div class="border-bottom row">   
+            <!-- Info: # of Votes & Answers -->
+            <div class="q-list-info d-inline-block px-2 align-top col-1">
+                <!-- Info: Votes -->
+                <div class="q-list-votes text-center">
+                    <p class="my-0">{{ question.total_votes|default:"0" }}</p>
+                    <p class="my-0">Votes</p>
+                </div>
+                <!-- Info: Answers -->
+                <div class="q-list-answers text-center">
+                    <p class="my-0">{{ question.answers_count|default:"0" }}</p>
+                    <p class="my-0">Answers</p>
+                </div>
+            </div>
+            <!-- Question Info: title, created by & created at -->
+            <div class="d-inline-block col-11">
+                <!-- Question: Title -->
+                <h1 class="d-inline">{{ question.title }}</h1>
+
+                <!-- Info: Asked by -->
+                <p class="mb-0">Asked by: {{ question.created_by.first_name }} {{ question.created_by.last_name }} on {{ question.created_at }}</p>
+
+                <!-- Info: Tags -->
+                <div class="mb-2">
+                    {% for tag in question.tags.all %}
+                    <a href="" class="badge badge-info">#{{ tag }}</a>
+                    {% endfor %}
+                </div>
+
+                <!-- Question: Action buttons - Like, Save, Edit & Delete-->
+                <div class="q-list-actions d-inline-block align-text-bottom">
+                    <!-- Question: Action buttons - Upvote/Bookmark/Downvote (Like & Save) -->
+                    {% if user.is_authenticated %}
+                    <div class="d-inline-block align-toptext-center">
+                        <!-- Actions: Upvote & Downvote (Like) -->
+                        {% if question.liked_by_user %}
+                        <a href="{% url 'question_downvote' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Unlike question">Liked</a>
+                        {% else %}
+                        <a href="{% url 'question_upvote' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Like if this question has been usefull to you, shows research effort and is clear">Like</a>
+                        {% endif %}
+                        
+                        <!-- Actions: Bookmark(Save) -->
+                        {% if question.bookmarked_by_user %}
+                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Delete question from your saved list">Saved</a>
+                        {% else %}
+                        <a href="{% url 'question_bookmark' question.pk %}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom" title="Add question to your saved list">Save</a>
+                        {% endif %}
+                        
+                    </div>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        {% if question.created_by == user %}
+                        <!-- Action: Edit -->
+                        <a href="{% url 'question_edit' question.pk %}" class="d-inline">
+                            <button type="button" class="btn btn-outline-primary">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                                </svg>
+                            </button>
+                        </a>
+
+                        <!-- Action: Delete -->
+                        <form action="{% url 'question_delete' question.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+    
+        <!-- Question: Body -->
+        <div class="container p-0">
+            <div class="p-2 row">
+        
+                
+                
+                <div class="q-list-summary d-inline-block align-top col-11">
+                    <p class="" >{{ question.body|safe }}</p>  
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <!-- Answers -->
+    <div class="pt-4">
+        <div>
+            <!-- Display Answers -->
+            <h4>Answers</h4>
+            {% for answer in answers %}
+            <div class="border-bottom pt-4">
+                <div class="pb-4">
+                    <p class="d-inline">Answered by: {{ answer.created_by.first_name }} {{ answer.created_by.last_name }} on {{answer.created_at}}</p>
+                    {% if user.is_authenticated %}
+                        {% if answer.created_by == user %}
+                        <!-- Actions: Edit -->
+                        <a href="{% url 'answer_edit' answer.pk %}" class="d-inline">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                            </svg>
+                        </a>
+    
+                        <!-- Actions: Delete -->
+                        <form action="{% url 'answer_delete' answer.pk %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <p>{{answer.body|safe}}</p>
+            </div>
+            {% empty %}
+            <p>No answers yet</p>
+            {% endfor %}
+        </div>
+
+        <!-- Write Anser -->
+        <div class="pt-4">
+            <h4>Your Answer:</h4>
+            {% if user.is_authenticated %}
+            <form action="{% url 'answer_new' question.pk %}" method="post">
+                {% csrf_token %}
+                {{ answer_form.media }}
+                {{ answer_form }}
+                <input type="submit" value="Post Your Answer" class="btn btn-primary">
+            </form>
+            {% else %}
+            <p>Login to answer this question</p>
+            {% endif %}
+        </div>
+    </div>
+
+    
+
+{% endblock %}

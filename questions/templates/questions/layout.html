@@ -1,0 +1,141 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+        <!-- Tag Input -->
+        <link rel="stylesheet" href="{% static 'questions/tagsinput.css' %}">
+
+        <!-- Styles CSS -->
+        <link rel="stylesheet" href="{% static 'questions/styles.css' %}">
+
+
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <header>
+            <!-- Fixed navbar -->
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                <a class="navbar-brand m-0 mr-4" href="#"><img height="38" src="https://s3.amazonaws.com/owler-image/logo/hathaway-dinwiddie_owler_20190905_071807_original.jpg" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse row" id="navbarCollapse">
+                    <!-- Navbar Buttons -->
+                    <ul class="navbar-nav mr-auto col-4">
+
+                        <!-- Section hidden pending review -->
+                            <!-- Navbar Button: Questions-->
+                            <!-- <li>
+                                <a class="nav-link" href="{% url 'guides_list_all' %}">Guides</a>
+                            </li> -->
+
+                            <!-- Navbar Button: Guides-->
+                            <!-- {% if user.is_authenticated %}
+                            <li>
+                                <div class="dropdown show">
+                                    <a class="nav-link dropdown-toggle" href="{% url 'questions_list_all' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Questions
+                                    </a>
+                                
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="{% url 'questions_list_all' %}">All <span class="sr-only">(current)</span></a>
+                                        <a class="dropdown-item" href="{% url 'questions_list_bookmarked' %}">Bookmarked</a>
+                                        <a class="dropdown-item" href="{% url 'questions_list_upvoted' %}">Upvoted</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a class="nav-link" href="{% url 'questions_list_all' %}">Questions</a>
+                            </li>
+                            {% endif %} -->
+                        <!-- End section hidden -->
+
+                        <!-- Example split danger button -->
+                        <div class="btn-group">
+                            <!-- <a class="nav-link" href="{% url 'guides_list_all' %}">Quick Start Guides</a> -->
+                            <!-- <a class="nav-link dropdown-toggle dropdown-toggle-split" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a> -->
+                            <a class="btn btn-secondary" href="{% url 'guides_list_all' %}">Quick Start Guides</a>
+                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'guides_list_all' %}">All</a>
+                                <a class="dropdown-item" href="#">Glossary</a>
+                                <a class="dropdown-item" href="#">Typical Durations</a>
+                                <a class="dropdown-item" href="#">Best Practices</a>
+                                <a class="dropdown-item" href="#">Lessons Learned</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'questions_list_all' %}">Questions</a>
+                            </div>
+                        </div>
+
+                    </ul>
+
+
+                    <!-- Search bar -->
+                    <form action="{% url 'guides_list_search' %}" class="form-inline mt-2 mt-md-0 col-7" method="GET">
+                        <input id="search_term" class="form-control mr-sm-2 col-9" type="text" placeholder="Search" aria-label="Search" name="search_term">
+                        <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <!-- User Profile button -->
+                    {%  if user.is_authenticated %}
+                    <a href="{% url 'user_profile' user.pk %}" class="col-1">
+                        <button type="button" class="btn text-secondary">
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"></path>
+                                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+                                <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
+                            </svg>
+                        </button>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+                    {% endif %}
+                </div>
+
+                
+            </nav>
+        </header>
+
+        <main role="main" class="flex-shrink-0">
+            <div class="body container pt-5">
+        
+                {% block body %}
+                {% endblock %}
+            </div>
+
+        </main>
+
+        <footer class="footer bg-light mt-5 text-center py-2 border-top">
+            <div class="container text-secondary">
+                <p>Designed & developed by cuevasj</p>
+                <p>&#169; 2020</p>
+            </div>
+            </footer>
+    <!-- Bootstrap: jQuery, Popper.js & Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
+    <!-- Tag Input -->
+    <script src="{% static 'questions/tagsinput.js' %}"></script>
+
+    <!-- Tooltips -->
+    <!-- data-toggle="tooltip" data-placement="top" title="Tooltip on top" -->
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>
+

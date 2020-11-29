@@ -1,0 +1,31 @@
+{% extends "questions/layout.html" %}
+
+{% block body %}
+
+    <h1>Username: {{profile_user.username | title}}</h1>
+    <p>First Name: {{profile_user.first_name}}</p>
+    <p>Last Name: {{profile_user.last_name}}</p>
+    <p>Email: {{profile_user.email}}</p>
+    <p>Date Joined {{profile_user.date_joined}}</p>
+
+    <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+
+    <!-- User's Questions -->
+    <h4>{{user.username | title}} asked these questions:</h4>
+    <ul>
+        {% for question in questions %}
+        <ul><a href="{% url 'question_show' question.pk %}">{{ question.title }}</a></ul>
+        {% endfor %}
+    </ul>
+
+
+    <!-- User's Answers -->
+    <h4>{{user.username | title}} responded to these questions:</h4>
+    <ul>
+        {% for answered_question in answered_questions %}
+        <ul><a href="{% url 'question_show' answered_question.pk %}">{{ answered_question.title }}</a></ul>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
