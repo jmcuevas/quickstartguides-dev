@@ -23,7 +23,7 @@
         <header>
             <!-- Fixed navbar -->
             <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                <a class="navbar-brand m-0 mr-4" href="#"><img height="38" src="https://s3.amazonaws.com/owler-image/logo/hathaway-dinwiddie_owler_20190905_071807_original.jpg" alt=""></a>
+                <a class="navbar-brand m-0 mr-4" href="{% url 'guides_list_all' %}"><img height="38" src="https://s3.amazonaws.com/owler-image/logo/hathaway-dinwiddie_owler_20190905_071807_original.jpg" alt=""></a>
                 {%  if user.is_authenticated %}
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
