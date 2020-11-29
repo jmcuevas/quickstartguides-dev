@@ -160,3 +160,7 @@ CKEDITOR_CONFIGS = {
         ]
     }
 }
+
+
+# Login URL - User for loging_required decorator
+LOGIN_URL = '/users/login/'
