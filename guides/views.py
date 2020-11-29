@@ -62,7 +62,6 @@ def new(request):
     else:
         return render(request, 'guides/new.html', {"new_guide_form": NewGuideForm()})
         
-
 @login_required
 def show(request, guide_id):
     guide = get_object_or_404(Guide, pk=guide_id)
