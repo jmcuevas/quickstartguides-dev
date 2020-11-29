@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import login_required
 
 from django import forms
 from .models import Question, Answer, Vote, Bookmark
@@ -50,9 +51,11 @@ class NewAnswerForm(forms.ModelForm):
 
 # ----- Views Questions -----
 
+@login_required
 def index(request):
     return render(request, "questions/index.html")
 
+@login_required
 def new(request):
 
     # Submit new Question Form
@@ -89,11 +92,9 @@ def new(request):
 
     # Get request to questions/new
     else:
-        if request.user.is_authenticated:
-            return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
-        else:
-            return(HttpResponseRedirect(reverse("login")))
+        return render(request, 'questions/new.html', {"new_question_form": NewQuestionForm()})
 
+@login_required
 def list_all(request):
     questions = Question.objects.all().order_by("-created_at")
     title = "All Questions"
@@ -119,6 +120,7 @@ def list_all(request):
     {"questions": questions,
     "title":title })
 
+@login_required
 def list_bookmarked(request):
     questions = Question.objects.all().order_by("-created_at")
     bookmarked_questions = []
@@ -146,6 +148,7 @@ def list_bookmarked(request):
         {"questions": bookmarked_questions,
         "title":title })
 
+@login_required
 def list_upvoted(request):
     questions = Question.objects.all().order_by("-created_at")
     upvoted_questions = []
@@ -172,6 +175,7 @@ def list_upvoted(request):
         {"questions": upvoted_questions,
         "title":title })
 
+@login_required
 def show(request, question_id):
     question = Question.objects.get(pk=question_id)
     answers = Answer.objects.filter(question=question)
@@ -196,6 +200,7 @@ def show(request, question_id):
         "answers":answers,
         "answer_form": NewAnswerForm() })
 
+@login_required
 def edit(request, question_id):
 
     # Check if question exists
@@ -205,7 +210,7 @@ def edit(request, question_id):
         print("---Question does not exist---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
-    if request.user.is_authenticated and request.user == question.created_by:
+    if request.user == question.created_by:
         tags_names = []
         for tag in question.tags.all():
             tags_names.append(tag.name)
@@ -218,6 +223,7 @@ def edit(request, question_id):
         print("---User is not logged in or didn't created question---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
+@login_required
 def update(request, question_id):
 
     # Check if Question exists
@@ -251,6 +257,7 @@ def update(request, question_id):
         print("---Method is not post---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
+@login_required
 def delete(request, question_id):
 
     # Check if question exists
@@ -274,6 +281,7 @@ def delete(request, question_id):
 
     return HttpResponseRedirect(reverse('questions_list_all'))
 
+@login_required
 def upvote(request, question_id):
 
     # Check if question exists
@@ -283,36 +291,34 @@ def upvote(request, question_id):
         print("---Question does not exists---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
-    # User should be logged in
-    if request.user.is_authenticated:
+    # User can only upvote a question once
+    try:
+        vote = Vote.objects.get(user=request.user, question=question)
+    except Vote.DoesNotExist:
+        print("Vote does not exist")
+        vote = None
 
-        # User can only upvote a question once
-        try:
-            vote = Vote.objects.get(user=request.user, question=question)
-        except Vote.DoesNotExist:
-            print("Vote does not exist")
-            vote = None
+    # Create new upvote
+    if vote is None:
+        upvote = Vote(user=request.user, question=question, upvote=True)
+        upvote.save()
+        print("---Question Upvoted---")
 
-        # Create new upvote
-        if vote is None:
-            upvote = Vote(user=request.user, question=question, upvote=True)
-            upvote.save()
-            print("---Question Upvoted---")
+    # Question is already voted
+    else:
+        if vote.upvote:
+            print("---User can only upvote question once---")
+            # User can oly upvote the question once
+            # Redirect
+        else: 
+            vote.delete()
+            print("---Downvote deleted---")
 
-        # Question is already voted
-        else:
-            if vote.upvote:
-                print("---User can only upvote question once---")
-                # User can oly upvote the question once
-                # Redirect
-            else: 
-                vote.delete()
-                print("---Downvote deleted---")
-
-        update_total_votes(question)
+    update_total_votes(question)
         
     return HttpResponseRedirect(reverse("questions_list_all"))
 
+@login_required
 def downvote(request, question_id):
 
     # Check if question exists
@@ -322,36 +328,34 @@ def downvote(request, question_id):
         print("---Question does not exists---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
-    # User should be logged in
-    if request.user.is_authenticated:
+    # User can only upvote a question once
+    try:
+        vote = Vote.objects.get(user=request.user, question=question)
+    except Vote.DoesNotExist:
+        print("Vote does not exist")
+        vote = None
 
-        # User can only upvote a question once
-        try:
-            vote = Vote.objects.get(user=request.user, question=question)
-        except Vote.DoesNotExist:
-            print("Vote does not exist")
-            vote = None
+    # Create new upvote
+    if vote is None:
+        downvote = Vote(user=request.user, question=question, upvote=False)
+        downvote.save()
+        print("---Question Downvoted---")
 
-        # Create new upvote
-        if vote is None:
-            downvote = Vote(user=request.user, question=question, upvote=False)
-            downvote.save()
-            print("---Question Downvoted---")
+    # Question is already voted
+    else:
+        if vote.upvote:
+            vote.delete()
+            print("---Upvote deleted---")
+        else: 
+            print("---User can only downvote question once---")
+            # User can oly upvote the question once
+            # Redirect
 
-        # Question is already voted
-        else:
-            if vote.upvote:
-                vote.delete()
-                print("---Upvote deleted---")
-            else: 
-                print("---User can only downvote question once---")
-                # User can oly upvote the question once
-                # Redirect
-
-        update_total_votes(question)
+    update_total_votes(question)
         
     return HttpResponseRedirect(reverse("questions_list_all"))
 
+@login_required
 def bookmark(request, question_id):
 
     # Check if question exists
@@ -361,29 +365,27 @@ def bookmark(request, question_id):
         print("---Question does not exists---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
-    # User should be logged in
-    if request.user.is_authenticated:
+    # Check if question is already bookmarked
+    try:
+        bookmark = Bookmark.objects.get(user=request.user, question=question)
+    except Bookmark.DoesNotExist:
+        bookmark = None
 
-        # Check if question is already bookmarked
-        try:
-            bookmark = Bookmark.objects.get(user=request.user, question=question)
-        except Bookmark.DoesNotExist:
-            bookmark = None
-    
-        # Create bookmark
-        if bookmark is None:
-            bookmark = Bookmark(user=request.user, question=question)
-            bookmark.save()
-            print("---Bookmark has been created---")
+    # Create bookmark
+    if bookmark is None:
+        bookmark = Bookmark(user=request.user, question=question)
+        bookmark.save()
+        print("---Bookmark has been created---")
 
-        # Delete bookmark
-        else:
-            bookmark.delete()
-            print("---Bookmark has been deleted---")
+    # Delete bookmark
+    else:
+        bookmark.delete()
+        print("---Bookmark has been deleted---")
 
     
     return HttpResponseRedirect(reverse('questions_list_all'))
 
+@login_required
 def search(request):
     if request.method == "GET":
         search_term = request.GET['search_term']
@@ -399,6 +401,7 @@ def search(request):
  
 # ----- Views Answers -----
 
+@login_required
 def answer_new(request, question_id):
     print("---Create new Answer---")
 
@@ -428,6 +431,7 @@ def answer_new(request, question_id):
 
     return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":question_id}))
 
+@login_required
 def answer_edit(request, answer_id):
 
     # Check if answer exists
@@ -438,7 +442,7 @@ def answer_edit(request, answer_id):
         return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
 
 
-    if request.user.is_authenticated and request.user == answer.created_by:
+    if request.user == answer.created_by:
         question = answer.question
         form_data = {"body": answer.body}
     
@@ -451,6 +455,7 @@ def answer_edit(request, answer_id):
         print("---User is not logged in or didn't created question---")
         return HttpResponseRedirect(reverse("questions_list_all"))
 
+@login_required
 def answer_update(request, answer_id):
     
     # Check if answer exists
@@ -489,6 +494,7 @@ def answer_update(request, answer_id):
         print("---Method is not post---")
         return HttpResponseRedirect(reverse("question_show", kwargs={"question_id":answer.question.pk}))
 
+@login_required
 def answer_delete(request, answer_id):
 
     # Check if answer exists
@@ -514,6 +520,7 @@ def answer_delete(request, answer_id):
 
 # ----- Helpers -----
 
+@login_required
 def update_total_votes(question):
     upvotes = Vote.objects.filter(question=question, upvote = True).count()
     downvotes = Vote.objects.filter(question=question, upvote = False).count()
