@@ -66,8 +66,14 @@ def new(request):
 def show(request, guide_id):
     guide = get_object_or_404(Guide, pk=guide_id)
 
+    # List of collaborators authorized to edit
+    collaborators = guide.collaborators.all()
+    user_is_collaborator = request.user in collaborators
+
     return render(request, "guides/show.html", {
-        "guide":guide })
+        "guide":guide,
+        "user_is_collaborator":user_is_collaborator,  
+    })
 
 @login_required
 def list_all(request):
@@ -80,9 +86,18 @@ def list_all(request):
 
     title = "All Guides"
 
-    return render(request, "guides/list.html", 
-    {"guides": guides,
-    "title":title })
+    # Assign boolean value to user_is_collaborator in each guide
+    editable_guides = []
+    for guide in guides:
+        collaborators = guide.collaborators.all()
+        if request.user in collaborators:
+            editable_guides.append(guide)
+
+    return render(request, "guides/list.html", {
+        "guides": guides,
+        "editable_guides": editable_guides,
+        "title": title, 
+    })
 
 @login_required
 def edit(request, guide_id):
@@ -94,14 +109,24 @@ def edit(request, guide_id):
         print("---Guide does not exist---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
-    if request.user == guide.created_by:
+    # List of collaborators authorized to edit
+    collaborators = guide.collaborators.all()
+    user_is_collaborator = request.user in collaborators
+
+    # User should be authorized to edit the guide
+    if user_is_collaborator or request.user.is_staff :
         tags_names = []
         for tag in guide.tags.all():
             tags_names.append(tag.name)
 
         form_data = {"title": guide.title, "description": guide.description, "content": guide.content, "tags":tags_names}
     
-        return render(request, "guides/edit.html", {"guide":guide, "form":NewGuideForm(initial=form_data), "form_data":form_data})
+        return render(request, "guides/edit.html", {
+            "guide":guide, 
+            "form":NewGuideForm(initial=form_data), 
+            "form_data":form_data, 
+            "user_is_collaborator":user_is_collaborator, 
+        })
 
     else:
         print("---User is not logged in or didn't created guide---")
@@ -117,8 +142,12 @@ def update(request, guide_id):
         print("---Guide does not exists---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
-    # User should have created Guide to update
-    if not (request.user == guide.created_by):
+    # List of collaborators authorized to edit
+    collaborators = guide.collaborators.all()
+    user_is_collaborator = request.user in collaborators
+
+    # User should be authorized to edit the guide
+    if not (user_is_collaborator or request.user.is_staff) :
         print("---User didn't created guide")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
@@ -150,9 +179,9 @@ def delete(request, guide_id):
         print("---Guide does not exists---")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
-    # User should have created Guide to update
-    if not (request.user == guide.created_by):
-        print("---User didn't created guide")
+    # User should be have admin rights to delete
+    if not (request.user.is_staff):
+        print("---User has no permission to delete a guide")
         return HttpResponseRedirect(reverse("guides_list_all"))
 
     # User clicked on Delete button (Post request)
