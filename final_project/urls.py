@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from users import views as user_views
+from guides import views as guides_views
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', user_views.index, name="index"),
@@ -23,4 +27,5 @@ urlpatterns = [
     path("questions/", include("questions.urls")),
     path("users/", include("users.urls")),
     path("guides/", include("guides.urls")),
-]
+    path("ckeditor/", include("ckeditor_uploader.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
